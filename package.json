@@ -42,6 +42,7 @@
     "@types/node": "^22.19.7",
     "@ubermanu/prettier-config": "^3.4.1",
     "@webcomponents/custom-elements": "^1.6.0",
+    "caniuse-lite": "^1.0.30001791",
     "format-message": "^6.2.4",
     "postcss": "^8.5.12",
     "prettier": "^3.8.1",
