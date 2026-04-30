@@ -2,41 +2,6 @@ export function canScroll(style) {
   return style === 'auto' || style === 'scroll'
 }
 
-/**
- * Shows scrollbar:
- *   <html>   <body>
- *   visible  visible
- *   visible  auto
- *   visible  scroll
- *   auto     visible
- *   auto     auto
- *   auto     scroll
- *   auto     hidden
- *   scroll   visible
- *   scroll   auto
- *   scroll   scroll
- *   scroll   hidden
- *
- * Does not show scrollbar:
- *   <html>   <body>
- *   visible  hidden
- *   hidden   visible
- *   hidden   auto
- *   hidden   scroll
- *   hidden   hidden
- */
-export function canScrollTop(html, body) {
-  switch (html) {
-    case 'visible':
-      return body !== 'hidden'
-    case 'auto':
-    case 'scroll':
-      return true
-    default:
-      return false
-  }
-}
-
 export function findScrollNormal(elem) {
   const style = getComputedStyle(elem)
   const width = canScroll(style.overflowX) && elem.scrollWidth > elem.clientWidth
@@ -66,15 +31,13 @@ export function getDocumentContext() {
   }
 }
 
-// TODO this isn't quite correct, but it's close enough
 export function findScrollTop(element) {
-  const { htmlNode, bodyNode, scroller } = getDocumentContext()
+  const { scroller } = getDocumentContext()
 
-  const htmlStyle = getComputedStyle(htmlNode)
-  const bodyStyle = getComputedStyle(bodyNode)
-
-  const width = canScrollTop(htmlStyle.overflowX, bodyStyle.overflowX) && scroller.scrollWidth > scroller.clientWidth
-  const height = canScrollTop(htmlStyle.overflowY, bodyStyle.overflowY) && scroller.scrollHeight > scroller.clientHeight
+  const scrollerStyle = getComputedStyle(scroller)
+  // Body scrolling uses overflow:visible but is still scrollable
+  const width = (canScroll(scrollerStyle.overflowX) || scrollerStyle.overflowX === 'visible') && scroller.scrollWidth > scroller.clientWidth
+  const height = (canScroll(scrollerStyle.overflowY) || scrollerStyle.overflowY === 'visible') && scroller.scrollHeight > scroller.clientHeight
 
   if (width || height) {
     return {
@@ -89,7 +52,6 @@ export function findScrollTop(element) {
   }
 }
 
-// TODO this should handle the case where <body> has its own scrollbar (separate from the viewport's scrollbar)
 export function findScroll(elem, innerScroll = false) {
   const { htmlNode, bodyNode } = getDocumentContext()
 
@@ -113,7 +75,9 @@ export function findScroll(elem, innerScroll = false) {
   // hack needed to work around non-spec-compliant versions of Chrome
   // https://code.google.com/p/chromium/issues/detail?id=157855
   if (document.compatMode === 'CSS1Compat') {
-    return findScrollTop(htmlNode)
+    const result = findScrollTop(htmlNode)
+    if (result) return result
+    return findScrollNormal(bodyNode) ?? null
   } else {
     return findScrollTop(bodyNode)
   }

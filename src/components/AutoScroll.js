@@ -41,17 +41,21 @@ export default class AutoScroll {
   startCycle(elem, scroller, root) {
     let scrollX, scrollY
 
+    const scrollerStyle = getComputedStyle(scroller)
+    const rowReverse = scrollerStyle.flexDirection === 'row-reverse'
+    const colReverse = scrollerStyle.flexDirection === 'column-reverse'
+
     const loop = () => {
       this.timeout = requestAnimationFrame(loop)
 
       scrollX = root ? window.scrollX : scroller.scrollLeft
       scrollY = root ? window.scrollY : scroller.scrollTop
 
-      const scrollWidth = scroller.scrollWidth - elem.clientWidth
-      const scrollHeight = scroller.scrollHeight - elem.clientHeight
+      const scrollWidth = scroller.scrollWidth - scroller.clientWidth
+      const scrollHeight = scroller.scrollHeight - scroller.clientHeight
 
-      scrollX = utils.clamp(scrollX + this.dirX, 0, scrollWidth)
-      scrollY = utils.clamp(scrollY + this.dirY, 0, scrollHeight)
+      scrollX = utils.clamp(scrollX + this.dirX, rowReverse ? -scrollWidth : 0, rowReverse ? 0 : scrollWidth)
+      scrollY = utils.clamp(scrollY + this.dirY, colReverse ? -scrollHeight : 0, colReverse ? 0 : scrollHeight)
 
       if (root) {
         window.scroll(scrollX, scrollY)
