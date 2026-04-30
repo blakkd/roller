@@ -1,6 +1,3 @@
-/** @type {number} */
-export const RAD_TO_DEG = Math.PI / 180
-
 /**
  * @param {number} x
  * @param {number} y
@@ -31,15 +28,23 @@ export function max(num, cap) {
 }
 
 /**
+ * @param {number} value
+ * @param {number} min
+ * @param {number} max
+ * @returns {number}
+ */
+export function clamp(value, min, max) {
+  return Math.min(Math.max(value, min), max)
+}
+
+/**
  * @param {number} x
  * @param {number} y
  * @returns {number}
  */
 export function angle(x, y) {
-  let angle = Math.atan(y / x) / RAD_TO_DEG
-  if (x < 0) {
-    angle += 180
-  } else if (y < 0) {
+  let angle = Math.atan2(y, x) * (180 / Math.PI)
+  if (angle < 0) {
     angle += 360
   }
   return angle

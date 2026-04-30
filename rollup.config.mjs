@@ -7,7 +7,7 @@ import manifestJSON from 'rollup-plugin-manifest-json'
 import postcss from 'rollup-plugin-postcss'
 import svelte from 'rollup-plugin-svelte'
 import svg from 'rollup-plugin-svg'
-import pkg from './package.json' assert { type: 'json' }
+import pkg from './package.json' with { type: 'json' }
 
 export default [
   {

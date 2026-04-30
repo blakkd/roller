@@ -39,30 +39,19 @@
    * @param root
    */
   function startCycle(elem, scroller, root) {
-    // This is needed to support SVG
-    let scrollX = root ? window.scrollX : scroller.scrollLeft,
-      scrollY = root ? window.scrollY : scroller.scrollTop
+     let scrollX, scrollY
 
-    function loop() {
+     function loop() {
       timeout = requestAnimationFrame(loop)
+
+      scrollX = root ? window.scrollX : scroller.scrollLeft
+      scrollY = root ? window.scrollY : scroller.scrollTop
 
       let scrollWidth = scroller.scrollWidth - elem.clientWidth,
         scrollHeight = scroller.scrollHeight - elem.clientHeight
 
-      scrollX += dirX
-      scrollY += dirY
-
-      if (scrollX < 0) {
-        scrollX = 0
-      } else if (scrollX > scrollWidth) {
-        scrollX = scrollWidth
-      }
-
-      if (scrollY < 0) {
-        scrollY = 0
-      } else if (scrollY > scrollHeight) {
-        scrollY = scrollHeight
-      }
+      scrollX = math.clamp(scrollX + dirX, 0, scrollWidth)
+      scrollY = math.clamp(scrollY + dirY, 0, scrollHeight)
 
       // This is needed to support SVG
       // This triggers a reflow

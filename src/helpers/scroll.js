@@ -73,8 +73,8 @@ export function findScrollTop(element) {
   const htmlStyle = getComputedStyle(htmlNode)
   const bodyStyle = getComputedStyle(bodyNode)
 
-  const width = canScrollTop(htmlStyle.overflowX, bodyStyle.overflowX) && scroller.scrollWidth > element.clientWidth
-  const height = canScrollTop(htmlStyle.overflowY, bodyStyle.overflowY) && scroller.scrollHeight > element.clientHeight
+  const width = canScrollTop(htmlStyle.overflowX, bodyStyle.overflowX) && scroller.scrollWidth > scroller.clientWidth
+  const height = canScrollTop(htmlStyle.overflowY, bodyStyle.overflowY) && scroller.scrollHeight > scroller.clientHeight
 
   if (width || height) {
     return {
