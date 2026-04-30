@@ -2,7 +2,7 @@
   import { onMount } from 'svelte'
   import { writable } from 'svelte/store'
   import defaults from '../defaultOptions'
-  import { _ } from 'svelte-intl'
+  import { _ } from '../i18n'
 
   const options = writable(defaults)
 

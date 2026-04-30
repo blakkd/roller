@@ -1,6 +1,5 @@
-import { getBrowserLocale, locale, translations } from 'svelte-intl'
+import { writable } from 'svelte/store'
 
-// Translations are stored in JSON files in the i18n directory.
 import de from './i18n/de_DE.json'
 import es from './i18n/es_ES.json'
 import fr from './i18n/fr_FR.json'
@@ -12,9 +11,7 @@ import pt from './i18n/pt_PT.json'
 import ru from './i18n/ru_RU.json'
 import zh from './i18n/zh_Hans_CN.json'
 
-// If you want to split your bundle, you can call this multiple times,
-// the dictionaries will be merged.
-translations.update({
+const allTranslations = {
   en: {},
   de,
   es,
@@ -26,7 +23,30 @@ translations.update({
   pt,
   ru,
   zh,
-})
+}
 
-// try to use window.navigator.language
-locale.set(getBrowserLocale('en'))
+function getBrowserLocale(fallback) {
+  if (typeof navigator !== 'undefined') {
+    const lang = navigator.language || navigator.userLanguage
+    const short = lang.substring(0, 2).toLowerCase()
+    if (allTranslations[short]) {
+      return short
+    }
+  }
+  return fallback
+}
+
+const currentLocale = writable(getBrowserLocale('en'))
+
+function _(key) {
+  let result = key
+  currentLocale.forEach((locale) => {
+    const dict = allTranslations[locale]
+    if (dict && dict[key] !== undefined) {
+      result = dict[key]
+    }
+  })
+  return result
+}
+
+export { _ }
