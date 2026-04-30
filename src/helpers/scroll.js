@@ -4,8 +4,10 @@ export function canScroll(style) {
 
 export function findScrollNormal(elem) {
   const style = getComputedStyle(elem)
-  const width = canScroll(style.overflowX) && elem.scrollWidth > elem.clientWidth
-  const height = canScroll(style.overflowY) && elem.scrollHeight > elem.clientHeight
+  const width =
+    canScroll(style.overflowX) && elem.scrollWidth > elem.clientWidth
+  const height =
+    canScroll(style.overflowY) && elem.scrollHeight > elem.clientHeight
 
   if (width || height) {
     return {
@@ -23,7 +25,9 @@ export function findScrollNormal(elem) {
 export function getDocumentContext() {
   const htmlNode = document.documentElement
   const bodyNode = document.body ?? htmlNode
-  const scroller = document.scrollingElement ? document.scrollingElement : bodyNode
+  const scroller = document.scrollingElement
+    ? document.scrollingElement
+    : bodyNode
   return {
     htmlNode,
     bodyNode,
@@ -36,8 +40,14 @@ export function findScrollTop(element) {
 
   const scrollerStyle = getComputedStyle(scroller)
   // Body scrolling uses overflow:visible but is still scrollable
-  const width = (canScroll(scrollerStyle.overflowX) || scrollerStyle.overflowX === 'visible') && scroller.scrollWidth > scroller.clientWidth
-  const height = (canScroll(scrollerStyle.overflowY) || scrollerStyle.overflowY === 'visible') && scroller.scrollHeight > scroller.clientHeight
+  const width =
+    (canScroll(scrollerStyle.overflowX) ||
+      scrollerStyle.overflowX === 'visible') &&
+    scroller.scrollWidth > scroller.clientWidth
+  const height =
+    (canScroll(scrollerStyle.overflowY) ||
+      scrollerStyle.overflowY === 'visible') &&
+    scroller.scrollHeight > scroller.clientHeight
 
   if (width || height) {
     return {
@@ -107,7 +117,7 @@ export function isScrollable(elem) {
 
 /**
  * @param elem
- * @returns {boolean|*|false}
+ * @returns {boolean | any | false}
  */
 function isInput(elem) {
   return (

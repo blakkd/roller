@@ -1,6 +1,6 @@
-import * as utils from '../helpers/utils'
-import { findScroll, getDocumentContext, isScrollable } from '../helpers/scroll'
 import defaultOptions from '../defaultOptions'
+import { findScroll, getDocumentContext, isScrollable } from '../helpers/scroll'
+import * as utils from '../helpers/utils'
 
 export default class AutoScroll {
   constructor() {
@@ -54,8 +54,16 @@ export default class AutoScroll {
       const scrollWidth = scroller.scrollWidth - scroller.clientWidth
       const scrollHeight = scroller.scrollHeight - scroller.clientHeight
 
-      scrollX = utils.clamp(scrollX + this.dirX, rowReverse ? -scrollWidth : 0, rowReverse ? 0 : scrollWidth)
-      scrollY = utils.clamp(scrollY + this.dirY, colReverse ? -scrollHeight : 0, colReverse ? 0 : scrollHeight)
+      scrollX = utils.clamp(
+        scrollX + this.dirX,
+        rowReverse ? -scrollWidth : 0,
+        rowReverse ? 0 : scrollWidth
+      )
+      scrollY = utils.clamp(
+        scrollY + this.dirY,
+        colReverse ? -scrollHeight : 0,
+        colReverse ? 0 : scrollHeight
+      )
 
       if (root) {
         window.scroll(scrollX, scrollY)
@@ -69,7 +77,10 @@ export default class AutoScroll {
   }
 
   shouldSticky(x, y) {
-    return this.options.stickyScroll && utils.hypot(x, y) < this.options.dragThreshold
+    return (
+      this.options.stickyScroll &&
+      utils.hypot(x, y) < this.options.dragThreshold
+    )
   }
 
   scale(value) {
@@ -203,7 +214,9 @@ export default class AutoScroll {
       if (
         target != null &&
         ((event.button === 1 && this.options.middleClick) ||
-          (event.button === 0 && (event.ctrlKey || event.metaKey) && this.options.ctrlClick)) &&
+          (event.button === 0 &&
+            (event.ctrlKey || event.metaKey) &&
+            this.options.ctrlClick)) &&
         event.clientX < this.htmlNode.clientWidth &&
         event.clientY < this.htmlNode.clientHeight &&
         (this.options.scrollOnLinks || isScrollable(target))

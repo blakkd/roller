@@ -56,7 +56,7 @@ export function angle(x, y) {
 
 /**
  * @param {number} angle
- * @return {string}
+ * @returns {string}
  */
 export function getStyleFromAngle(angle) {
   if (angle < 30 || angle >= 330) {
@@ -90,6 +90,7 @@ export function getImageFromScrollNormal(o) {
 
 /**
  * Stop event propagation
+ *
  * @param {Event} e
  * @param {boolean} preventDefault
  */

@@ -33,14 +33,24 @@
       </div>
       <div class="control">
         {$_('...if moving less than')}{' '}
-        <input type="number" class="input" bind:value={$options.moveThreshold} aria-label={$_('...if moving less than X pixels')} />{' '}
+        <input
+          type="number"
+          class="input"
+          bind:value={$options.moveThreshold}
+          aria-label={$_('...if moving less than X pixels')}
+        />{' '}
         {$_('pixels')}
       </div>
     </div>
     <div class="field">
       <div class="control">
         {$_('Scroll if moving more than')}{' '}
-        <input type="number" class="input" bind:value={$options.dragThreshold} aria-label={$_('Drag threshold in pixels')} />{' '}
+        <input
+          type="number"
+          class="input"
+          bind:value={$options.dragThreshold}
+          aria-label={$_('Drag threshold in pixels')}
+        />{' '}
         {$_('pixels')}
       </div>
     </div>
@@ -66,7 +76,12 @@
     <div class="field">
       <div class="control">
         {$_('Move speed:')}{' '}
-        <input type="number" class="input" bind:value={$options.moveSpeed} aria-label={$_('Move speed in pixels')} />{' '}
+        <input
+          type="number"
+          class="input"
+          bind:value={$options.moveSpeed}
+          aria-label={$_('Move speed in pixels')}
+        />{' '}
         {$_('(lower is faster)')}
       </div>
     </div>
@@ -83,7 +98,12 @@
         <label class="checkbox">
           <input type="checkbox" bind:checked={$options.shouldCap} />{' '}
           {$_("Don't scroll faster than")}{' '}
-          <input type="number" class="input" bind:value={$options.capSpeed} aria-label={$_('Speed cap in pixels')} />{' '}
+          <input
+            type="number"
+            class="input"
+            bind:value={$options.capSpeed}
+            aria-label={$_('Speed cap in pixels')}
+          />{' '}
           {$_('pixels')}
         </label>
       </div>
@@ -110,7 +130,10 @@
     <div class="field">
       <div class="control">
         <label class="checkbox">
-          <input type="checkbox" bind:checked={$options.disableOnWindows} />{' '}
+          <input
+            type="checkbox"
+            bind:checked={$options.disableOnWindows}
+          />{' '}
           {$_('Disable on Windows platform')}
         </label>
       </div>
