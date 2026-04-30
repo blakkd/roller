@@ -2,10 +2,8 @@
 
 <script>
   import { onDestroy, onMount } from 'svelte'
-  import * as math from '../helpers/math'
-  import { getStyleFromAngle, getImageFromScrollNormal } from '../helpers/cursor'
+  import * as utils from '../helpers/utils'
   import { findScroll, getDocumentContext, isScrollable } from '../helpers/scroll'
-  import { stopEvent } from '../helpers/event'
   import defaultOptions from '../defaultOptions'
 
   export let options = defaultOptions
@@ -50,8 +48,8 @@
       let scrollWidth = scroller.scrollWidth - elem.clientWidth,
         scrollHeight = scroller.scrollHeight - elem.clientHeight
 
-      scrollX = math.clamp(scrollX + dirX, 0, scrollWidth)
-      scrollY = math.clamp(scrollY + dirY, 0, scrollHeight)
+      scrollX = utils.clamp(scrollX + dirX, 0, scrollWidth)
+      scrollY = utils.clamp(scrollY + dirY, 0, scrollHeight)
 
       // This is needed to support SVG
       // This triggers a reflow
@@ -72,7 +70,7 @@
    * @returns {boolean}
    */
   function shouldSticky(x, y) {
-    return options.stickyScroll && math.hypot(x, y) < options.dragThreshold
+    return options.stickyScroll && utils.hypot(x, y) < options.dragThreshold
   }
 
   /**
@@ -85,33 +83,33 @@
 
   /** @param {WheelEvent} event */
   function handleMouseWheel(event) {
-    stopEvent(event, true)
+    utils.stopEvent(event, true)
   }
 
   /** @param {MouseEvent} event */
   function handleMouseMove(event) {
-    stopEvent(event, true)
+    utils.stopEvent(event, true)
 
     let x = event.clientX - oldX,
       y = event.clientY - oldY
 
-    if (math.hypot(x, y) > options.moveThreshold) {
-      cursor = getStyleFromAngle(math.angle(x, y))
+    if (utils.hypot(x, y) > options.moveThreshold) {
+      cursor = getStyleFromAngle(utils.angle(x, y))
 
       // 10 = 5
       // 5  = 10
       // 1  = 50
       if (options.sameSpeed) {
-        x = math.max(x, 1) * 50
-        y = math.max(y, 1) * 50
+        x = utils.max(x, 1) * 50
+        y = utils.max(y, 1) * 50
       }
 
       x = scale(x)
       y = scale(y)
 
       if (options.shouldCap) {
-        x = math.max(x, options.capSpeed)
-        y = math.max(y, options.capSpeed)
+        x = utils.max(x, options.capSpeed)
+        y = utils.max(y, options.capSpeed)
       }
 
       dirX = x
@@ -125,7 +123,7 @@
 
   /** @param {MouseEvent} event */
   function handleMouseUp(event) {
-    stopEvent(event, true)
+    utils.stopEvent(event, true)
 
     let x = event.clientX - oldX,
       y = event.clientY - oldY
@@ -189,7 +187,7 @@
   /** @param {MouseEvent} event */
   function handleMouseDown(event) {
     if (scrolling) {
-      stopEvent(event, true)
+      utils.stopEvent(event, true)
     } else {
       const path = event.composedPath()
       // TODO use e.target instead of null ?
@@ -206,7 +204,7 @@
       ) {
         const elem = findScroll(target, options.innerScroll)
         if (elem !== null) {
-          stopEvent(event, true)
+          utils.stopEvent(event, true)
           start(elem, event.clientX, event.clientY)
         }
       }
