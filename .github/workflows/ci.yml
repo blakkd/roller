@@ -22,3 +22,4 @@ jobs:
           cache: 'pnpm'
       - run: pnpm i
       - run: pnpm build
+      - run: pnpm exec changeset status --since=origin/main

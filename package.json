@@ -26,14 +26,19 @@
   "scripts": {
     "build": "rimraf dist && rollup -c",
     "optimize": "svgo src/images/origin/*.svg",
+    "prepare": "husky",
     "prepublishOnly": "pnpm run build",
     "start:chrome": "pnpm run build && node scripts/chrome-ext.cjs",
     "start:firefox": "pnpm run build && web-ext run --source-dir ./dist/",
     "watch": "rimraf dist && rollup -c -w",
     "zip": "pnpm run build && web-ext build --source-dir ./dist/ --overwrite-dest"
   },
+  "lint-staged": {
+    "*": "prettier --write --ignore-unknown"
+  },
   "prettier": "@ubermanu/prettier-config",
   "devDependencies": {
+    "@changesets/cli": "^2.31.0",
     "@rollup/plugin-commonjs": "^28.0.9",
     "@rollup/plugin-json": "^6.1.0",
     "@rollup/plugin-node-resolve": "^16.0.3",
@@ -44,6 +49,8 @@
     "@webcomponents/custom-elements": "^1.6.0",
     "caniuse-lite": "^1.0.30001791",
     "format-message": "^6.2.4",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.4.0",
     "postcss": "^8.5.12",
     "prettier": "^3.8.1",
     "prettier-plugin-svelte": "^3.4.1",
