@@ -9,9 +9,7 @@
     "32": "icons/icon32.png",
     "48": "icons/icon48.png"
   },
-  "permissions": [
-    "storage"
-  ],
+  "permissions": ["storage"],
   "options_ui": {
     "page": "options_page.html",
     "browser_style": true
@@ -19,12 +17,8 @@
   "content_scripts": [
     {
       "all_frames": false,
-      "js": [
-        "content_script.js"
-      ],
-      "matches": [
-        "<all_urls>"
-      ],
+      "js": ["content_script.js"],
+      "matches": ["<all_urls>"],
       "run_at": "document_end"
     }
   ],
