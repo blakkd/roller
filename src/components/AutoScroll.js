@@ -19,9 +19,11 @@ export default class AutoScroll {
     this.scrolling = false
     this.overlay = null
 
-    const { htmlNode } = getDocumentContext()
+    const { htmlNode, bodyNode } = getDocumentContext()
     this.htmlNode = htmlNode
-    this.scrollBehavior = htmlNode.style.scrollBehavior
+    this.bodyNode = bodyNode
+    this.htmlScrollBehavior = htmlNode.style.scrollBehavior
+    this.bodyScrollBehavior = bodyNode.style.scrollBehavior
 
     this.handleMouseDown = this.handleMouseDown.bind(this)
     this.handleMouseMove = this.handleMouseMove.bind(this)
@@ -160,7 +162,8 @@ export default class AutoScroll {
       this.overlay = null
     }
 
-    this.htmlNode.style.setProperty('scroll-behavior', this.scrollBehavior)
+    this.htmlNode.style.setProperty('scroll-behavior', this.htmlScrollBehavior)
+    this.bodyNode.style.setProperty('scroll-behavior', this.bodyScrollBehavior)
   }
 
   start(o, x, y) {
@@ -181,7 +184,8 @@ export default class AutoScroll {
 
     this.updateOverlay()
 
-    this.htmlNode.style.setProperty('scroll-behavior', 'auto')
+    this.htmlNode.style.setProperty('scroll-behavior', 'auto', 'important')
+    this.bodyNode.style.setProperty('scroll-behavior', 'auto', 'important')
   }
 
   updateOverlay() {
