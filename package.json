@@ -39,7 +39,7 @@
     "@rollup/plugin-node-resolve": "^16.0.3",
     "@rollup/plugin-terser": "^1.0.0",
     "@types/chrome": "^0.1.36",
-    "@types/node": "^22.19.7",
+    "@types/node": "^24",
     "@ubermanu/prettier-config": "^3.4.1",
     "@webcomponents/custom-elements": "^1.6.0",
     "caniuse-lite": "^1.0.30001791",
