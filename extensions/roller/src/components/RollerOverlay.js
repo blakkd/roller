@@ -1,8 +1,8 @@
 class RollerOverlay extends HTMLElement {
   constructor() {
-    super();
+    super()
 
-    const shadow = this.attachShadow({ mode: 'open' });
+    const shadow = this.attachShadow({ mode: 'open' })
     shadow.innerHTML = `
       <style>
         :host {
@@ -17,24 +17,64 @@ class RollerOverlay extends HTMLElement {
           display: block;
         }
       </style>
-    `;
+    `
   }
 
   set bgImage(value) {
-    this.style.backgroundImage = value ? `url("${value}")` : 'none';
+    this.style.backgroundImage = value ? `url("${value}")` : 'none'
   }
 
   set bgPosition(value) {
-    this.style.backgroundPosition = value;
+    this.style.backgroundPosition = value
   }
 
   set cursor(value) {
-    this.style.cursor = value;
+    this.style.cursor = value
   }
 }
 
-if (!customElements.get('roller-overlay')) {
-  customElements.define('roller-overlay', RollerOverlay);
+const wcRegistered =
+  customElements &&
+  !customElements.get('roller-overlay') &&
+  (customElements.define('roller-overlay', RollerOverlay), true)
+
+function createOverlay() {
+  if (wcRegistered) {
+    return document.createElement('roller-overlay')
+  }
+
+  const overlay = document.createElement('div')
+  overlay.style.transform = 'translateZ(0)'
+  overlay.style.position = 'fixed'
+  overlay.style.top = '0'
+  overlay.style.left = '0'
+  overlay.style.width = '100%'
+  overlay.style.height = '100%'
+  overlay.style.zIndex = '2147483647'
+  overlay.style.backgroundRepeat = 'no-repeat'
+
+  Object.defineProperty(overlay, 'bgImage', {
+    configurable: true,
+    set(value) {
+      this.style.backgroundImage = value ? `url("${value}")` : 'none'
+    },
+  })
+
+  Object.defineProperty(overlay, 'bgPosition', {
+    configurable: true,
+    set(value) {
+      this.style.backgroundPosition = value
+    },
+  })
+
+  Object.defineProperty(overlay, 'cursor', {
+    configurable: true,
+    set(value) {
+      this.style.cursor = value
+    },
+  })
+
+  return overlay
 }
 
-export default RollerOverlay;
+export { createOverlay }

@@ -3,7 +3,7 @@ import defaults from './defaultOptions'
 
 const autoScroll = new AutoScroll()
 
-chrome?.storage?.local.get(defaults, (options) => {
+chrome?.storage?.local?.get(defaults, (options) => {
   if (navigator.platform === 'Win32' && options.disableOnWindows) {
     return
   }

@@ -1,7 +1,7 @@
 import defaultOptions from '../defaultOptions'
 import { findScroll, getDocumentContext, isScrollable } from '../helpers/scroll'
 import * as utils from '../helpers/utils'
-import RollerOverlay from './RollerOverlay'
+import { createOverlay } from './RollerOverlay'
 
 export default class AutoScroll {
   constructor() {
@@ -192,7 +192,7 @@ export default class AutoScroll {
   updateOverlay() {
     if (this.visible) {
       if (!this.overlay) {
-        this.overlay = document.createElement('roller-overlay')
+        this.overlay = createOverlay()
         document.documentElement.appendChild(this.overlay)
       }
       this.overlay.bgImage = this.backgroundImage
