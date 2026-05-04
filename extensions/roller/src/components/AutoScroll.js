@@ -1,6 +1,7 @@
 import defaultOptions from '../defaultOptions'
 import { findScroll, getDocumentContext, isScrollable } from '../helpers/scroll'
 import * as utils from '../helpers/utils'
+import RollerOverlay from './RollerOverlay'
 
 export default class AutoScroll {
   constructor() {
@@ -191,20 +192,12 @@ export default class AutoScroll {
   updateOverlay() {
     if (this.visible) {
       if (!this.overlay) {
-        this.overlay = document.createElement('div')
-        this.overlay.style.transform = 'translateZ(0)'
-        this.overlay.style.position = 'fixed'
-        this.overlay.style.top = '0'
-        this.overlay.style.left = '0'
-        this.overlay.style.width = '100%'
-        this.overlay.style.height = '100%'
-        this.overlay.style.zIndex = '2147483647'
-        this.overlay.style.backgroundRepeat = 'no-repeat'
+        this.overlay = document.createElement('roller-overlay')
         document.documentElement.appendChild(this.overlay)
       }
-      this.overlay.style.backgroundImage = `url("${this.backgroundImage}")`
-      this.overlay.style.backgroundPosition = `${this.backgroundPositionX - 13}px ${this.backgroundPositionY - 13}px`
-      this.overlay.style.cursor = this.cursor
+      this.overlay.bgImage = this.backgroundImage
+      this.overlay.bgPosition = `${this.backgroundPositionX - 13}px ${this.backgroundPositionY - 13}px`
+      this.overlay.cursor = this.cursor
     }
   }
 
