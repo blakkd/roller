@@ -3,6 +3,9 @@ export function canScroll(style) {
 }
 
 export function findScrollNormal(elem) {
+  if (!elem || elem.nodeType !== 1) {
+    return null
+  }
   const style = getComputedStyle(elem)
   const width =
     canScroll(style.overflowX) && elem.scrollWidth > elem.clientWidth
@@ -39,7 +42,6 @@ export function findScrollTop(element) {
   const { scroller } = getDocumentContext()
 
   const scrollerStyle = getComputedStyle(scroller)
-  // Body scrolling uses overflow:visible but is still scrollable
   const width =
     (canScroll(scrollerStyle.overflowX) ||
       scrollerStyle.overflowX === 'visible') &&
@@ -69,7 +71,7 @@ export function findScroll(elem, innerScroll = false) {
     while (elem !== document && elem !== htmlNode && elem !== bodyNode) {
       if (elem == null) {
         return null
-      } else if (elem.host) {
+      } else if (elem.host instanceof ShadowRoot) {
         elem = elem.host
       } else {
         const x = findScrollNormal(elem)
@@ -105,7 +107,7 @@ export function isScrollable(elem) {
       return false
     } else if (elem === document || elem === htmlNode || elem === bodyNode) {
       return true
-    } else if (elem.host) {
+    } else if (elem.host instanceof ShadowRoot) {
       elem = elem.host
     } else if (isInput(elem)) {
       return false

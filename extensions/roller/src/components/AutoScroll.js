@@ -206,10 +206,9 @@ export default class AutoScroll {
       utils.stopEvent(event, true)
     } else {
       const path = event.composedPath()
-      const target = path.length === 0 ? null : path[0]
+      const target = path.find(node => node.nodeType === 1) ?? null
 
-      if (
-        target != null &&
+      if (target != null &&
         ((event.button === 1 && this.options.middleClick) ||
           (event.button === 0 &&
             (event.ctrlKey || event.metaKey) &&
