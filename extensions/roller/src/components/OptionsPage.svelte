@@ -1,129 +1,132 @@
 <script>
-  import { onMount } from 'svelte'
-  import { writable } from 'svelte/store'
   import defaults from '../defaultOptions'
-  import { _ } from '../i18n'
+  import { _ as t } from '../i18n'
 
-  const options = writable(defaults)
+  let options = $state({ ...defaults })
 
-  onMount(() => {
+  $effect(() => {
     chrome.storage.local.get(defaults, (data) => {
-      options.set(data)
-    })
-
-    options.subscribe((data) => {
-      chrome.storage.local.set(data)
+      Object.assign(options, data)
     })
   })
 
+  $effect(() => {
+    jsonDump()
+  })
+
+  function jsonDump() {
+    chrome.storage.local.set({ ...options })
+  }
+
   function handleReset() {
-    options.set(defaults)
+    Object.assign(options, defaults)
+    jsonDump()
   }
 </script>
 
 <main class="container">
   <section class="section">
-    <h2 class="title is-5">{$_('Basic')}</h2>
+    <h2 class="title is-5">{t('Basic')}</h2>
     <div class="field">
       <div class="control">
         <label class="checkbox">
-          <input type="checkbox" bind:checked={$options.stickyScroll} />{' '}
-          {$_('Scroll without holding down the mouse button')}
+          <input type="checkbox" bind:checked={options.stickyScroll} />{' '}
+          {t('Scroll without holding down the mouse button')}
         </label>
       </div>
       <div class="control">
-        {$_('...if moving less than')}{' '}
+        {t('...if moving less than')}{' '}
         <input
           type="number"
           class="input"
-          bind:value={$options.moveThreshold}
-          aria-label={$_('...if moving less than X pixels')}
+          bind:value={options.moveThreshold}
+          aria-label={t('...if moving less than X pixels')}
         />{' '}
-        {$_('pixels')}
+        {t('pixels')}
       </div>
     </div>
     <div class="field">
       <div class="control">
-        {$_('Scroll if moving more than')}{' '}
+        {t('Scroll if moving more than')}{' '}
         <input
           type="number"
           class="input"
-          bind:value={$options.dragThreshold}
-          aria-label={$_('Drag threshold in pixels')}
+          bind:value={options.dragThreshold}
+          aria-label={t('Drag threshold in pixels')}
         />{' '}
-        {$_('pixels')}
+        {t('pixels')}
       </div>
     </div>
     <div class="field">
       <div class="control">
         <label class="checkbox">
-          <input type="checkbox" bind:checked={$options.middleClick} />{' '}
-          {$_('Scroll by using (Middle Click)')}
+          <input type="checkbox" bind:checked={options.middleClick} />{' '}
+          {t('Scroll by using (Middle Click)')}
         </label>
       </div>
     </div>
     <div class="field">
       <div class="control">
         <label class="checkbox">
-          <input type="checkbox" bind:checked={$options.ctrlClick} />{' '}
-          {$_('Scroll by using (Ctrl/⌘ + Left Click)')}
+          <input type="checkbox" bind:checked={options.ctrlClick} />{' '}
+          {t('Scroll by using (Ctrl/⌘ + Left Click)')}
         </label>
       </div>
     </div>
   </section>
   <section class="section">
-    <h2 class="title is-5">{$_('Speed')}</h2>
+    <h2 class="title is-5">{t('Speed')}</h2>
     <div class="field">
       <div class="control">
-        {$_('Move speed:')}{' '}
+        {t('Move speed:')}{' '}
         <input
           type="number"
           class="input"
-          bind:value={$options.moveSpeed}
-          aria-label={$_('Move speed in pixels')}
+          bind:value={options.moveSpeed}
+          aria-label={t('Move speed in pixels')}
         />{' '}
-        {$_('(lower is faster)')}
+        {t('(lower is faster)')}
       </div>
     </div>
     <div class="field">
       <div class="control">
         <label class="checkbox">
-          <input type="checkbox" bind:checked={$options.sameSpeed} />{' '}
-          {$_('Scroll at the same speed (ignore mouse movement)')}
+          <input type="checkbox" bind:checked={options.sameSpeed} />{' '}
+          {t('Scroll at the same speed (ignore mouse movement)')}
         </label>
       </div>
     </div>
     <div class="field">
       <div class="control">
         <label class="checkbox">
-          <input type="checkbox" bind:checked={$options.shouldCap} />{' '}
-          {$_("Don't scroll faster than")}{' '}
+          <input type="checkbox" bind:checked={options.shouldCap} />{' '}
+          {t("Don't scroll faster than")}{' '}
           <input
             type="number"
             class="input"
-            bind:value={$options.capSpeed}
-            aria-label={$_('Speed cap in pixels')}
+            bind:value={options.capSpeed}
+            aria-label={t('Speed cap in pixels')}
           />{' '}
-          {$_('pixels')}
+          {t('pixels')}
         </label>
       </div>
     </div>
   </section>
   <section class="section">
-    <h2 class="title is-5">{$_('Advanced')}</h2>
+    <h2 class="title is-5">{t('Advanced')}</h2>
     <div class="field">
       <div class="control">
         <label class="checkbox">
-          <input type="checkbox" bind:checked={$options.innerScroll} />{' '}
-          {$_('Scroll on inner elements')}
+          <input type="checkbox" bind:checked={options.innerScroll} />{' '}
+          {t('Scroll on inner elements')}
         </label>
       </div>
     </div>
     <div class="field">
       <div class="control">
         <label class="checkbox">
-          <input type="checkbox" bind:checked={$options.scrollOnLinks} />{' '}
-          {$_('Scroll when clicking on a link or textarea')}
+          <input type="checkbox" bind:checked={options.scrollOnLinks} />{' '}
+          {t('Scroll when clicking on a link or textarea')}
         </label>
       </div>
     </div>
@@ -132,17 +135,17 @@
         <label class="checkbox">
           <input
             type="checkbox"
-            bind:checked={$options.disableOnWindows}
+            bind:checked={options.disableOnWindows}
           />{' '}
-          {$_('Disable on Windows platform')}
+          {t('Disable on Windows platform')}
         </label>
       </div>
     </div>
   </section>
   <section class="section">
     <div class="buttons">
-      <button class="button" on:click={handleReset}>
-        {$_('Reset')}
+      <button class="button" onclick={handleReset}>
+        {t('Reset')}
       </button>
     </div>
   </section>

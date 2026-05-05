@@ -1,5 +1,3 @@
-import { writable } from 'svelte/store'
-
 import de from './i18n/de_DE.json'
 import es from './i18n/es_ES.json'
 import fr from './i18n/fr_FR.json'
@@ -36,16 +34,14 @@ function getBrowserLocale(fallback) {
   return fallback
 }
 
-const currentLocale = writable(getBrowserLocale('en'))
+const currentLocale = getBrowserLocale('en')
 
 function _(key) {
   let result = key
-  currentLocale.forEach((locale) => {
-    const dict = allTranslations[locale]
-    if (dict && dict[key] !== undefined) {
-      result = dict[key]
-    }
-  })
+  const dict = allTranslations[currentLocale]
+  if (dict && dict[key] !== undefined) {
+    result = dict[key]
+  }
   return result
 }
 
