@@ -4,7 +4,7 @@ export default {
   moveSpeed: 10,
   stickyScroll: true,
   innerScroll: true,
-  scrollOnLinks: false,
+  scrollOnLinks: true,
   sameSpeed: false,
   capSpeed: 10,
   shouldCap: false,
